@@ -82,3 +82,24 @@ select *, case
         else branch_id
         END as New_branch_Id
         from employee;
+        
+--- LAG & LEAD --- 
+
+-- Oczekiwany przykładowy output
+-- Vertical name | cat_1 | Suma sprzedaży dla danego cat_1
+--Home & Garden | Decor | 32
+--Health & Beuty | Beauty | 62
+
+--- rank() over(partition by vertical_name order by sales) 
+
+select * from offers;
+
+with PreNext_Values AS (select cat_1, offer_id, change_timestamp,
+        LAG(stock) Over(partition by offer_id order by change_timestamp) AS PreviousValue
+        , stock from offers)
+        , All_together AS (select *, PreviousValue - stock AS Sales, rank() over(partition by vertical_name order by PreviousValue - stock desc) AS Max_Vert from PreNext_Values 
+        join verticals
+        on PreNext_Values.cat_1=verticals.cat_id_
+        where change_timestamp like '2023-03-02')
+        select vertical_name, cat_1_name AS Kategoria, Sales from All_together where Max_Vert = 1;
+
