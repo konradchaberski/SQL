@@ -41,6 +41,8 @@ select * from nazwa
 join nazwa as nazwa2
 on nazwa.branch_id = nazwa2.branch_id;
 
+select *, COALESCE(super_id, '0') as New_super_id from employee;
+
 --- JOIN ---  
 
 SELECT * from employee
