@@ -1,0 +1,84 @@
+--- SQL - UNION ---
+
+(select * 
+from employee 
+where sex = 'F' 
+order by salary desc
+limit 2)
+
+union all
+
+(select * 
+from employee
+where sex = 'M'
+order by salary desc
+limit 2);
+
+--- WITH in Partition BY ---
+
+# Dla jednej oferty mamy kilka wpisów. Chemy wyświetlić dla każdej offer_id najświeższy datą wpis (partition by + rank)
+
+with ranking as (select *, rank() over(Partition by offer_id order by change_timestamp DESC) as ranking2
+from stock)
+
+select offer_id, ranking2, change_timestamp from ranking where ranking2 = 1;
+
+**** Partition BY
+
+select last_name, sex, salary, RANK() OVER(PARTITION BY sex ORDER BY salary DESC)  from employee;
+
+*** JOIN & NULL Replacement
+
+WITH nazwa AS(
+SELECT branch_id, mgr_id, mgr_start_date,
+case when branch_name IS NULL then 'No Name'
+Else branch_name 
+END 
+as branch_name
+from branch)
+
+select * from nazwa 
+join nazwa as nazwa2
+on nazwa.branch_id = nazwa2.branch_id;
+
+--- JOIN ---  
+
+SELECT * from employee
+join best_employee
+on employee.last_name=best_employee.last_name;
+
+--- WITH AS ---
+
+with New_Table as (select * from employee
+join stock
+on employee.first_name=stock.offer_creator)
+select change_timestamp from New_Table where offer_creator = 'David';
+
+--- ALTER & ADD to the TABLE --- 
+
+ALTER table stock add Offer_Creator varchar (50);
+
+Update stock 
+set offer_Creator = 'David'
+where offer_id = '24567';
+Update stock 
+set offer_Creator = 'Jan'
+where offer_id = '24568';
+Update stock 
+set offer_Creator = 'Angela'
+where offer_id = '24569';
+Update stock 
+set offer_Creator = 'Kelly'
+where offer_id = '245610';
+Update stock 
+set offer_Creator = 'Stanley'
+where offer_id = '245611';
+select * from employee;
+
+--- CASE WHEN THEN ELSE END ---
+
+select *, case
+        when branch_id IS NULL then 'Value_is_Null'
+        else branch_id
+        END as New_branch_Id
+        from employee;
