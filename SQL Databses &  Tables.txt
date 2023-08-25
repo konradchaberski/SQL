@@ -1,0 +1,40 @@
+SHOW DATABASES;   -  Shows all databases in the server
+SHOW tables;  -  Shows the table in a database
+
+CREATE DATABASE;  - Creates a new database
+
+DROP DATABASE;   - Removes a database
+
+SELECT DATABASE(); - Shows actual (used) database
+
+USE <database-name>; -  To use a database:
+
+CREATING TABLE:
+    CREATE TABLE cats (
+        name VARCHAR(50),
+        age INT
+    );
+     
+    CREATE TABLE dogs (
+        name VARCHAR(50),
+        breed VARCHAR(50),
+        age INT
+    );
+
+ADDING VALUES TO THE TABLE
+insert into cats 
+(cat_name, cat_age) 
+values ('Maisie', 5);
+
+DESCRIBE cats;   -  Describing a table in a database
+SHOW COLUMNS FROM <name of table>;
+
+Multi-line comments start with /* and end with */.
+Any text between /* and */ will be ignored.
+
+CONTROL + Slash - Comments all the selected lines
+
+To drop a table:
+DROP TABLE <table-name>;
+To specifically drop the cats table:
+DROP TABLE cats; 
