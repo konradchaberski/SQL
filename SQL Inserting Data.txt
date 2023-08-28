@@ -1,0 +1,153 @@
+    CREATE TABLE cats (
+        name VARCHAR(50),
+        age INT
+    );
+
+
+Insert a cat:
+
+    INSERT INTO cats (name, age) 
+    VALUES ('Blue Steele', 5);
+
+And another:
+
+    INSERT INTO cats (name, age) 
+    VALUES ('Jenkins', 7);
+
+MULTIPLE VALUES
+insert into Pastry
+values 
+('strawberries', 5),
+('blueberries', 10),
+('flour', 7);
+
+Using NOT NULL:
+    CREATE TABLE cats2 (
+        name VARCHAR(100) NOT NULL,
+        age INT NOT NULL
+    );
+
+VALUES NOT NULL:
+create table cats2
+(
+name varchar (150) NOT NULL,
+age int NOT NULL);
+
+
+
+Define a table with a DEFAULT name specified:
+
+    CREATE TABLE cats3  (    
+        name VARCHAR(20) DEFAULT 'no name provided',    
+        age INT DEFAULT 99  
+    );
+
+Notice the change when you describe the table:
+
+DESC cats3;
+
+Insert a cat without a name:
+
+INSERT INTO cats3(age) VALUES(13);
+
+Or a nameless, ageless cat:
+
+INSERT INTO cats3() VALUES();
+
+Combine NOT NULL and DEFAULT:
+
+    CREATE TABLE cats4  (    
+        name VARCHAR(20) NOT NULL DEFAULT 'unnamed',    
+        age INT NOT NULL DEFAULT 99 
+    );
+
+Primary Key - Unique Identifier ; Cannot be ever NULL
+-- One way of specifying a PRIMARY KEY
+
+    CREATE TABLE unique_cats (
+    	cat_id INT PRIMARY KEY,
+        name VARCHAR(100) NOT NULL,
+        age INT NOT NULL
+    );
+
+
+-- Another option:
+
+
+    CREATE TABLE unique_cats2 (
+    	cat_id INT,
+        name VARCHAR(100) NOT NULL,
+        age INT NOT NULL,
+        PRIMARY KEY (cat_id)
+    );
+
+create table Konrad
+(
+Name varchar(150),
+Second_Name varchar(150),
+ID int,
+primary key(ID)
+);
+
+desc Konrad;
+
+
+
+#####  AUTO INCREMENT
+
+create table Konrad2
+(Name varchar(150),
+Second_Name varchar(150),
+ID int auto_increment,
+primary key(ID));
+
+insert into Konrad2
+(Name,Second_Name)
+values
+("Dominika", "Grajewska"),
+("Marcin", "Markwitz"),
+("Łukasz", "Małolepszy"),
+("Maria", "Kolodziej");
+
+select * from Konrad2; 
+
+--  AUTO_INCREMENT EXAMPLE
+
+
+    CREATE TABLE unique_cats3 (
+        cat_id INT AUTO_INCREMENT,
+        name VARCHAR(100) NOT NULL,
+        age INT NOT NULL,
+        PRIMARY KEY (cat_id)
+    );
+
+
+#####   --    Defining employees table
+
+    CREATE TABLE employees (
+        id INT AUTO_INCREMENT,
+        first_name VARCHAR(255) NOT NULL,
+        last_name VARCHAR(255) NOT NULL,
+        middle_name VARCHAR(255),
+        age INT NOT NULL,
+        current_status VARCHAR(255) NOT NULL DEFAULT 'employed',
+        PRIMARY KEY(id)
+    );
+
+-- Another way of defining the primary key:
+
+
+    CREATE TABLE employees (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        first_name VARCHAR(255) NOT NULL,
+        last_name VARCHAR(255) NOT NULL,
+        middle_name VARCHAR(255),
+        age INT NOT NULL,
+        current_status VARCHAR(255) NOT NULL DEFAULT 'employed'
+    );
+
+-- A test INSERT:
+
+
+    INSERT INTO employees(first_name, last_name, age) VALUES
+    ('Dora', 'Smith', 58);
