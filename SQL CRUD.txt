@@ -47,3 +47,9 @@ DELETE FROM cats WHERE cat_id=age;
 -- Delete all cats:
 
 DELETE FROM cats; 
+
+Double Update:
+
+update shirts
+set shirt_size='XS',color='off white'
+where color='white';
