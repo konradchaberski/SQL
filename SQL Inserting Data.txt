@@ -151,3 +151,10 @@ select * from Konrad2;
 
     INSERT INTO employees(first_name, last_name, age) VALUES
     ('Dora', 'Smith', 58);
+
+
+---- Updating data:
+
+update shirts
+set shirt_size='L'
+where article='polo shirt';
