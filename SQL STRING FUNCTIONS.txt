@@ -1,0 +1,116 @@
+#### STRING FUNCTIONS:
+
+https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_ascii
+
+### CONCAT
+   
+ SELECT CONCAT('pi', 'ckle');
+     
+    SELECT CONCAT(author_fname,' ', author_lname) AS author_name FROM books;
+   
+### CONCAT_WS
+  
+    SELECT CONCAT_WS('-',title, author_fname, author_lname) FROM books;
+	### WS means 'with separator'
+
+### SUBSTRING
+
+    SELECT SUBSTRING('Hello World', 1, 4);
+     HELL
+    SELECT SUBSTRING('Hello World', 7);
+     WORLD
+    SELECT SUBSTRING('Hello World', -3);
+     rld
+    SELECT SUBSTRING(title, 1, 10) AS 'short title' FROM books;
+     
+    SELECT SUBSTR(title, 1, 10) AS 'short title' FROM books;
+
+#### CONCAT & SUBSTRING
+
+select concat(substring(title, 1,10),'...') AS short_title from books;
+
+    select concat(
+			substr(author_fname, 1, 1),
+            '.',
+            substr(author_lname,1,1),
+            '.') 
+            AS Initials 
+	from books;
+
+### REPLACE
+
+SELECT 
+    REPLACE('Konrad Chaberski',
+        'Konrad',
+        'Konradeł') AS New_Name
+
+    SELECT REPLACE('Hello World', 'Hell', '%$#@');
+      
+    SELECT REPLACE('Hello World', 'l', '7');
+     
+    SELECT REPLACE('Hello World', 'o', '0');
+     
+    SELECT REPLACE('HellO World', 'o', '*');
+     
+    SELECT
+      REPLACE('cheese bread coffee milk', ' ', ' and ');
+     
+    SELECT REPLACE(title, 'e ', '3') FROM books;
+     
+    SELECT REPLACE(title, ' ', '-') FROM books;
+
+### REPLACE
+
+select reverse(author_fname) from books;
+select author_fname AS Name, reverse(author_fname) AS Name from books;
+
+#### REVERSE
+
+    SELECT REVERSE('Hello World');
+     
+    SELECT REVERSE('meow meow');
+     
+    SELECT REVERSE(author_fname) FROM books;
+     
+    SELECT CONCAT('woof', REVERSE('woof'));
+     
+    SELECT CONCAT(author_fname, REVERSE(author_fname)) FROM books;
+
+#### LENGTH
+
+select length('Konrad Chaberski');
+select char_length('Konrad Chaberski');
+
+    SELECT CHAR_LENGTH('Hello World');
+     
+    SELECT CHAR_LENGTH(title) as length, title FROM books;
+     
+    SELECT author_lname, CHAR_LENGTH(author_lname) AS 'length' FROM books;
+     
+    SELECT CONCAT(author_lname, ' is ', CHAR_LENGTH(author_lname), ' characters long') FROM books;
+
+### ucase & lcase
+
+select concat(ucase('I love'),' ', lcase('Dominisia Grajewska')) AS Kocham_Dominisie;
+
+    SELECT UPPER('Hello World');
+     
+    SELECT LOWER('Hello World');
+     
+    SELECT UPPER(title) FROM books;
+     
+    SELECT CONCAT('MY FAVORITE BOOK IS ', UPPER(title)) FROM books;
+     
+    SELECT CONCAT('MY FAVORITE BOOK IS ', LOWER(title)) FROM books;
+
+### ADDITIONAL STRING FUNCTIONS
+
+SELECT INSERT('Hello Bobby', 7, 0, 'There '); 
+     
+SELECT LEFT('omghahalol!', 3);
+     
+SELECT RIGHT('omghahalol!', 4);
+     
+SELECT REPEAT('ha', 4);
+     
+SELECT TRIM('  pickle  ');
