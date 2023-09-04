@@ -114,3 +114,26 @@ SELECT RIGHT('omghahalol!', 4);
 SELECT REPEAT('ha', 4);
      
 SELECT TRIM('  pickle  ');
+
+select replace(title,' ','->') from books;
+
+select author_lname AS forwards, reverse(author_lname) AS backwards from books;
+
+SELECT 
+    CONCAT(ucase(author_fname),
+            ' ',
+            ucase(author_lname)) AS 'Full name in caps'
+FROM
+    books;
+
+SELECT 
+    CONCAT(title,
+            ' was released in ',
+            released_year) AS blurb
+FROM
+    books;
+    
+SELECT 
+    Title, CHAR_LENGTH(title) AS 'Character count'
+FROM
+    books;
