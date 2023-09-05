@@ -1,0 +1,204 @@
+select count(*) from books;
+
+insert into books () values ();
+
+select count(distinct title) from books where title like '%the%';
+
+select title from books where title like '%the%';
+
+select count(*) from books where title like '%the%';
+
+#### COUNT ###
+
+with Summary AS (
+		select author_fname, 
+			author_lname, 
+                        avg(pages) AS Average 
+		from books 
+                group by author_fname, 
+			author_lname)
+                        
+		select concat(author_fname,' ', author_lname) AS Author, 
+			round(average) AS Average_Pages 
+                from Summary 
+                where author_lname IS NOT NULL 
+                order by Average 
+		desc;
+
+
+SELECT 
+    CONCAT(author_fname, ' ', author_lname) AS Author,
+    COUNT(title) AS Books_written
+FROM
+    books
+WHERE
+    title IS NOT NULL
+GROUP BY author
+ORDER BY books_written DESC;
+
+
+##### MIN, MAX 
+
+SELECT 
+    title, MAX(CHAR_LENGTH(title)) AS Longest_Text
+FROM
+    books
+WHERE
+    title IS NOT NULL
+GROUP BY title
+ORDER BY longest_text DESC; 
+
+SELECT 
+    title, MAX(pages) AS Max_Pages
+FROM
+    books
+WHERE
+    title IS NOT NULL
+GROUP BY title
+ORDER BY max_pages DESC;
+
+
+##
+
+SELECT 
+    title, MAX(pages) AS Max_Pages
+FROM
+    books
+WHERE
+    title IS NOT NULL
+GROUP BY title
+ORDER BY max_pages DESC;
+
+
+#### SUBQUERIES 
+
+SELECT 
+    *
+FROM
+    books
+WHERE title = (SELECT 
+            title
+        FROM
+            books
+        WHERE
+            title LIKE '%10%%');
+
+
+
+###
+
+
+With summary AS (
+				select concat(author_fname,' ', author_lname) AS Full_Name, 
+                title 
+                from books 
+                where title is not null)
+                
+						select full_Name, 
+                        count(title) AS Books_Written 
+                        from summary
+                        group by full_name 
+                        order by books_written 
+                        desc;
+
+
+
+#### Second way of the above:
+
+SELECT 
+    CONCAT(author_fname, author_lname) AS AUTHOR,
+    COUNT(*) AS Books
+FROM
+    books
+GROUP BY author;
+
+
+### 3rd way of the above:
+
+SELECT 
+    CONCAT(author_fname, author_lname) AS AUTHOR,
+    count(title)
+FROM
+    books
+GROUP BY author;
+
+
+#### CODES FROM THE COURSE
+
+    SELECT author_lname, MIN(released_year) FROM books GROUP BY author_lname;
+     
+    SELECT author_lname, MAX(released_year), MIN(released_year) FROM books GROUP BY author_lname;
+     
+    SELECT 
+    	author_lname, 
+    	COUNT(*) as books_written, 
+    	MAX(released_year) AS latest_release,
+    	MIN(released_year)  AS earliest_release,
+          MAX(pages) AS longest_page_count
+    FROM books GROUP BY author_lname;
+     
+     
+    SELECT 
+    	author_lname, 
+            author_fname,
+    	COUNT(*) as books_written, 
+    	MAX(released_year) AS latest_release,
+    	MIN(released_year)  AS earliest_release
+    FROM books GROUP BY author_lname, author_fname;
+
+### SUM
+
+SELECT 
+    CONCAT(author_fname, ' ', author_lname) AS Author,
+    SUM(pages) AS Summary_Pages
+FROM
+    books
+GROUP BY author
+ORDER BY summary_pages DESC; 
+
+##### TASKS
+
+select sum(stock_quantity) from books;
+
+select concat(author_fname,' ',author_lname) as author, round(avg(released_year)) as average from books group by author;
+
+select concat(author_fname,' ',author_lname) AS Author, title, pages from books order by pages desc limit 1;
+
+select concat(author_fname,' ',author_lname) AS Author, max(pages) as pages from books group by author order by pages desc limit 1;
+
+select concat(author_fname,' ',author_lname) AS Author, title, pages from books where pages = (select max(pages) from books);
+
+
+SELECT 
+    released_year, COUNT(title), ROUND(AVG(pages))
+FROM
+    books
+WHERE
+    released_year IS NOT NULL
+GROUP BY released_year
+ORDER BY released_year ASC; 
+
+
+    SELECT COUNT(*) FROM books;
+     
+    SELECT released_year, COUNT(*) 
+    FROM books GROUP BY released_year;
+     
+    SELECT AVG(released_year) 
+    FROM books GROUP BY author_lname, author_fname;
+     
+     
+    SELECT CONCAT(author_fname, ' ', author_lname) AS author, pages FROM books
+    WHERE pages = (SELECT MAX(pages) FROM books);
+     
+    SELECT CONCAT(author_fname, ' ', author_lname) AS author, pages FROM books
+    ORDER BY pages DESC LIMIT 1;
+     
+     
+    SELECT 
+        released_year AS year,
+        COUNT(*) AS '# books',
+        AVG(pages) AS 'avg pages'
+    FROM books
+    GROUP BY released_year
+    ORDER BY released_year;
