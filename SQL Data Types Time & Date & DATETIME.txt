@@ -1,0 +1,158 @@
+CREATE TABLE digits (
+    price DECIMAL(6 , 2 )
+);
+insert into digits ()
+		values (4566.50);
+
+show warnings;   -    Used to show warnings for a specific data table.
+
+
+    CREATE TABLE people (
+    	name VARCHAR(100),
+        birthdate DATE,
+        birthtime TIME,
+        birthdt DATETIME
+    );
+     
+    INSERT INTO people2 (name, birthdate, birthtime, birthdt)
+    VALUES ('Elton', '2000-12-25', '11:00:00', '2000-12-25 11:00:00');
+     
+    INSERT INTO people2 (name, birthdate, birthtime, birthdt)
+    VALUES ('Lulu', '1985-04-11', '9:45:10', '1985-04-11 9:45:10');
+     
+    INSERT INTO people2 (name, birthdate, birthtime, birthdt)
+    VALUES ('Juan', '2020-08-15', '23:59:00', '2020-08-15 23:59:00');
+
+
+#### Extra functions:
+
+    SELECT CURTIME();
+     
+    SELECT CURDATE();
+     
+    SELECT NOW();
+     
+    INSERT INTO people2 (name, birthdate, birthtime, birthdt)
+    VALUES ('Hazel', CURDATE(), CURTIME(), NOW());
+
+
+####
+	SELECT 
+        birthdate,
+        DAY(birthdate),
+        DAYOFWEEK(birthdate),
+        DAYOFYEAR(birthdate)
+    FROM people2;
+     
+    SELECT 
+        birthdate,
+        MONTHNAME(birthdate),
+        YEAR(birthdate)
+    FROM people2;
+
+
+####
+
+    SELECT 
+        birthtime,
+        HOUR(birthtime),
+        MINUTE(birthtime)
+    FROM people2;
+     
+    SELECT 
+        birthdt,
+        MONTH(birthdt),
+        DAY(birthdt),
+        HOUR(birthdt),
+        MINUTE(birthdt)
+    FROM people2;
+
+
+###
+
+
+    SELECT birthdate, DATE_FORMAT(birthdate, '%a %b %D') FROM people2;
+     
+    SELECT birthdt, DATE_FORMAT(birthdt, '%H:%i') FROM people2;
+     
+    SELECT birthdt, DATE_FORMAT(birthdt, 'BORN ON: %r') FROM people2;
+
+
+select curdate();
+select (curdate() - ('1995-08-09'));
+
+select datediff('2023-09-08', '1995-08-09');
+
+select round(datediff(curdate(), birthdate) / 365) AS Estimated_Age from people2;
+
+### Rounding Values:
+
+select ceiling(datediff(curdate(), birthdate) / 365) from people2;
+select floor(datediff(curdate(), birthdate) / 365) from people2;
+select round(datediff(curdate(), birthdate) / 365) from people2;
+
+select birthdate, date_add(birthdate, interval 18 year) AS Year_of_1st_Vote from people2;
+select birthdate, subdate(birthdate, interval 1 year) AS A_Year_Before from people2;
+
+select timediff(curtime(), '7:00:52');
+
+SELECT DATE_FORMAT(
+		NOW() - INTERVAL 18 YEAR, 
+                '%b - %W - %Y') AS Exact_Date;	
+
+select '1995-08-09' + interval 18 year
+
+#### CREATING TABLE WITH TIMESTAMP
+
+create table captions (
+			caption varchar(150),
+            created_at datetime default CURRENT_TIMESTAMP,
+            updated_at datetime ON UPDATE current_timestamp);
+
+update captions 
+set caption = 'I LOVE LIFE !!!!!!!!!!';
+        
+select * from captions;
+
+    CREATE TABLE captions (
+      text VARCHAR(150),
+      created_at TIMESTAMP default CURRENT_TIMESTAMP
+    );
+     
+    CREATE TABLE captions2 (
+      text VARCHAR(150),
+      created_at TIMESTAMP default CURRENT_TIMESTAMP,
+      updated_at TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    );
+
+
+#### TASKS:
+
+select date_format(curdate(), '%W') AS Day_of_the_week ;
+
+select birthdate, day(birthdate), dayofweek(birthdate) AS Day_of_week , dayofyear(birthdate) from people2;
+
+SELECT NOW();  !!!!!
+
+select dayofweek(curdate()) AS Day_of_the_week;
+
+select date_format(now(), '%W');
+
+### TASK ### ~!!!
+
+create table Tweets (
+		tweet_content varchar(300),
+        username varchar(25),
+        creation_time timestamp default CURRENT_TIMESTAMP);
+        
+OR
+
+create table Tweets (
+		tweet_content varchar(300),
+        username varchar(25),
+        creation_time datetime default CURRENT_TIMESTAMP);
+
+drop table tweets;
+insert into tweets (tweet_content, username) values ('blabla', 'siuś');
+
+select * from tweets;
