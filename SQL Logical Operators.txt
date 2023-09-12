@@ -1,0 +1,164 @@
+!=
+LIKE
+NOT LIKE
+<, >,  =, >=
+
+select * from books where author_lname != 'Gaiman';
+
+select title from books where title NOT LIKE '%Just%';
+
+select * from books where pages > 100;
+
+select * from books where released_year >= 2010;
+
+    SELECT * FROM books
+    WHERE pages < 200;
+     
+    SELECT * FROM books
+    WHERE released_year < 2000;
+     
+    SELECT * FROM books
+    WHERE released_year <= 1985;
+
+SELECT 
+    *
+FROM
+    books
+WHERE
+    author_fname = 'Dave'
+        AND released_year > 2010;
+
+    SELECT title, author_lname, released_year FROM books
+    WHERE released_year > 2010
+    AND author_lname = 'Eggers';
+     
+    SELECT title, author_lname, released_year FROM books
+    WHERE released_year > 2010
+    AND author_lname = 'Eggers'
+    AND title LIKE '%novel%';
+
+
+    SELECT title, pages FROM books 
+    WHERE CHAR_LENGTH(title) > 30
+    AND pages > 500;
+     
+    SELECT title, author_lname FROM books
+    WHERE author_lname='Eggers' AND
+    released_year > 2010;
+     
+    SELECT title, author_lname, released_year FROM books
+    WHERE author_lname='Eggers' OR
+    released_year > 2010;
+     
+     
+    SELECT title, pages FROM books
+    WHERE pages < 200 
+    OR title LIKE '%stories%';
+
+
+#### CALCULATING THE DATES
+
+select * from people2 where year(birthdate) < 2005;
+
+select * from people2 where year(birthdate) < '2005-MM-DD';
+
+select * from people2 where birthtime > '09:00:00';
+
+select * from people2 where birthtime between cast('12:00:00' AS TIME) AND cast('16:00:00' AS TIME);
+
+    SELECT * FROM people WHERE birthtime 
+    BETWEEN CAST('12:00:00' AS TIME) 
+    AND CAST('16:00:00' AS TIME);
+     
+     
+    SELECT * FROM people WHERE HOUR(birthtime)
+    BETWEEN 12 AND 16;
+
+
+#####  IN OPERATOR
+
+select * from books where author_fname in ('Jhumpa', 'Neil');
+
+SELECT 
+    *
+FROM
+    books
+WHERE
+    released_year NOT IN (2000 , 2002, 2004, 2006, 2008, 2010, 2012, 2014)
+ORDER BY released_year DESC;
+
+SELECT title, author_lname FROM books
+WHERE author_lname NOT IN ('Carver', 'Lahiri', 'Smith');
+
+##### MODULO
+
+select * from books where released_year % 2 = 1;
+
+select 10 % 3;
+
+
+###### CASE WHEN
+
+select *, 
+	case
+		when released_year >= '2000-01-01' then 'Modern Lit'
+        else '20th Century Lit'
+	end as Genre
+from books;
+
+
+#### LARGE CASE
+
+select *, 
+	case
+		when stock_quantity >= 100 then '***'
+        when stock_quantity between 50 and 100 then '**'
+        else '*'
+	end AS Stock
+from books;
+
+
+SELECT 
+    title,
+    stock_quantity,
+    CASE
+        WHEN stock_quantity BETWEEN 0 AND 40 THEN '*'
+        WHEN stock_quantity BETWEEN 41 AND 70 THEN '**'
+        WHEN stock_quantity BETWEEN 71 AND 100 THEN '***'
+        WHEN stock_quantity BETWEEN 101 AND 140 THEN '****'
+        ELSE '*****'
+    END AS stock
+FROM
+    books;
+ 
+ 
+SELECT 
+    title,
+    stock_quantity,
+    CASE
+        WHEN stock_quantity <= 40 THEN '*'
+        WHEN stock_quantity <= 70 THEN '**'
+        WHEN stock_quantity <= 100 THEN '***'
+        WHEN stock_quantity <= 140 THEN '****'
+        ELSE '*****'
+    END AS stock
+FROM
+    books;
+
+
+
+delete from books where author_fname is null;
+select * from books where author_fname IS NULL;
+
+
+#### TASK 
+
+SELECT 
+    author_fname, author_lname,
+    case
+		when COUNT(title) = 1 then '1 book'
+        else concat(COUNT(title),' books')
+	end as Books_Count
+FROM
+    books
+GROUP BY author_fname , author_lname;
