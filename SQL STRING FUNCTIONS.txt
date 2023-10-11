@@ -145,3 +145,11 @@ SELECT
     stock_quantity AS Quantity
 FROM
     books;
+
+
+#### FORMAT ()
+
+SELECT 
+   distinct department, FORMAT(round(avg(salary) over(partition by department),2),2) as Average_Salary
+FROM
+    employees;
