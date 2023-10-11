@@ -33,3 +33,16 @@ VALUES
 
 with Size AS (select *, concat(title,' - ', pages) AS Total_Size from books)
 			select *, concat(author_fname,' ',author_lname) AS Full_Name from Size ORDER BY released_year desc;
+
+#### CASE WHEN + JOIN
+
+SELECT 
+    *,
+    CASE
+        WHEN se.title IS NULL THEN 0
+        ELSE 1
+    END AS if_in_series
+FROM
+    books b
+        LEFT JOIN
+    series2 se ON b.released_year = se.released_year;
