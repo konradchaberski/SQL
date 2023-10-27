@@ -1,0 +1,86 @@
+SELECT TOP (1000) [UniqueID ]
+      ,[ParcelID]
+      ,[LandUse]
+      ,[PropertyAddress]
+      ,[SaleDate]
+      ,[SalePrice]
+      ,[LegalReference]
+      ,[SoldAsVacant]
+      ,[OwnerName]
+      ,[OwnerAddress]
+      ,[Acreage]
+      ,[TaxDistrict]
+      ,[LandValue]
+      ,[BuildingValue]
+      ,[TotalValue]
+      ,[YearBuilt]
+      ,[Bedrooms]
+      ,[FullBath]
+      ,[HalfBath]
+  FROM [Excel File Tasks].[dbo].[Alex_Table]
+
+
+
+----------  CHANGING THE DATE FORMAT --------------
+
+SELECT        CONVERT(date, SaleDate) AS SaleDate_
+FROM            [Alex_Table]
+
+alter table alex_Table
+add Sales_Date_New Date;
+
+update alex_Table 
+set Sales_Date_New = CONVERT(date, SaleDate)
+
+
+select Sales_Date_New from [Excel File Tasks].[dbo].[Alex_Table];
+
+
+SELECT TOP (1000) [UniqueID ]
+      ,[ParcelID]
+      ,[LandUse]
+      ,[PropertyAddress]
+      ,[SaleDate]
+	  ,Sales_Date_New
+      ,[SalePrice]
+      ,[LegalReference]
+      ,[SoldAsVacant]
+      ,[OwnerName]
+      ,[OwnerAddress]
+      ,[Acreage]
+      ,[TaxDistrict]
+      ,[LandValue]
+      ,[BuildingValue]
+      ,[TotalValue]
+      ,[YearBuilt]
+      ,[Bedrooms]
+      ,[FullBath]
+      ,[HalfBath]
+  FROM [Excel File Tasks].[dbo].[Alex_Table]
+
+
+  ----------  FIXING NULL VALUES BY USING JOINS (JOINING THE SAME TABLE) -----------------
+
+ 
+  select * from alex_table 
+
+  select a.parcelID, a.propertyaddress, b.parcelID, b.propertyaddress, a.uniqueID, ISNULL(a.propertyaddress, b.propertyaddress) from alex_table a 
+  join alex_table b
+  on a.parcelID = b.parcelID
+  and a.uniqueID <> b.uniqueID
+  where	a.propertyaddress is null;
+
+  update a
+  set a.propertyaddress = ISNULL(a.propertyaddress, b.propertyaddress) from alex_table a 
+  join alex_table b
+  on a.parcelID = b.parcelID
+  and a.uniqueID <> b.uniqueID
+  where	a.propertyaddress is null;
+
+
+  ------------ DROPPING TABLES & COLUMNS ELIMINATES THEM FOR GOOD -----------
+
+  alter table alex_table
+  drop column saleDate;
+
+
