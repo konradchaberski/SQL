@@ -1,0 +1,122 @@
+#### SQL REGEX
+
+*	Matches zero or more instances of the preceding String
++	Matches one or more instances of the preceding String
+.	Matches any single character
+?	Matches zero or one instance of the preceding Strings
+^	^ matches the beginning of a String
+$	$ matches the ending of a String
+[abc]	Matches any character listed in between the square brackets
+[^abc]	Matches any character not listed in between the square brackets
+[A-Z]	Matches any letter in uppercase
+[a-z]	Matches any letter in lowercase
+[0-9]	Matches any digit between 0-9
+[[:<:]]	Matches the beginning of words
+[[:>:]]	Matches the end of words
+[:class:]	Matches any character class
+p1|p2|p3	Mathes any of the specified pattern
+{n}	Matches n instances of the preceding element
+{m,n}	Matches m through n instances of the preceding element
+
+^ - Starting with
+$ - Ending with 
+{} - how many characters
+
+https://dev.mysql.com/doc/refman/8.0/en/regexp.html
+
+MySQL REGEXP performs a pattern match of a string expression against a pattern. The pattern is supplied as an argument.
+
+If the pattern finds a match in the expression, the function returns 1, else it returns 0.
+
+If either expression or pattern is NULL, the function returns NULL.
+
+This function is useful in -
+
+    Pattern matching: It allows us to search for strings that match a specific pattern defined by a regular expression.
+    Regular expression patterns: Meta-characters and quantifiers can be used to match characters, ranges of characters, or repeat characters in regular expressions.
+    Complex pattern matching: Regular expressions allow you to define complex patterns that are difficult or impossible to express with simple wildcard characters (%) or underscores (_).
+
+EXAMPLES ###### 
+
+The following MySQL statement returns all rows from the author table where the country column contains either 'USA' or 'UK'.
+SELECT * FROM author WHERE country REGEXP 'USA|UK';
+
+The following MySQL statement will find the author’s name beginning with ‘w’. The ‘^’ is used to match the beginning of the name.
+SELECT * FROM author 
+WHERE aut_name REGEXP '^w';
+
+The following statement will find the author’s name ending with ‘s’. The ‘$’ character have been used to match the ending of the name.
+
+select * from books where title regexp 's$';
+
+The following statement will find the author’s name containing a ‘t’.
+
+SELECT * FROM author WHERE aut_name REGEXP "t"
+
+The following MySQL statement returns true(1) or false(0)from the given expression where the text contains three consecutive digits 
+
+SELECT 'It12345contains3consicutive67digits' REGEXP '[0-9]{3}';
+RETURNS 1
+
+The following statement will find the author’s name containing a ‘z’ or ‘v’ or ‘y’.
+
+SELECT * FROM author WHERE aut_name REGEXP "[zvy]";
+
+The following statement will find the author’s name containing characters from ‘x’ to ‘z’. 
+
+SELECT * FROM author WHERE aut_name REGEXP "[x-z]";
+
+The following statement will find the author’s name containing exactly 12 characters. Use ‘^’ and ‘$’ match the beginning and ending of the name and twelve instances of ‘.’ have been used for maintaining twelve characters.
+
+SELECT * FROM author WHERE aut_name REGEXP '^............$'; 
+
+The following statement will find the author’s name containing exactly 12 characters. Use ‘^’ and ‘$’ match the beginning and ending of the name and ‘{12}’ have been after ‘.’ for repeating ‘.’ twelve times.
+
+SELECT * FROM author
+WHERE aut_name REGEXP '^.{12}$';
+
+### Other Examples 
+
+select * from books;
+
+Eliminate the ones that start with characters between a-z:
+select * from books where title regexp '^[^a-z]';
+
+Leaves only the ones that start with a-z characters
+select * from books where title regexp "^[a-z]";
+
+Retrieve only values starting with characters 0-9 and with 10 characters inside min & max.
+select * from books where title regexp "^[1-9].{10}$";
+
+select * from books where title regexp 'the';
+
+select * from books where title regexp 'f*book';
+
+select * from books where released_year regexp '(1996|1997|2014|2015|1994)';
+
+select replace(title,'Gods', 'Goddess') as title
+	from (
+			select * from books 
+            where title 
+            regexp '(Gods|Name|Norse)') as x;
+
+
+### searching any word starting with 'WO' or 'CO'
+
+select * from books where title regexp '[wc]o';
+select * from books where title regexp '[a]l';
+
+
+### Matches all characters starting with the values in the brackets.
+
+select * from books where title regexp '^(The|Interpreter|Coraline)';
+
+
+### ADVANCED
+
+ select insert(title, 4, 1,' 0') as New_Value
+		from (
+			select * from books 
+            where title 
+            regexp '(Gods|Name|Norse)') as x
+            where title like '%Name%';        
