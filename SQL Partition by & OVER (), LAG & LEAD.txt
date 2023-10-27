@@ -1,0 +1,249 @@
+ALL KINDS OF RANKS
+
+https://www.c-sharpcorner.com/article/the-complete-reference-ranking-functions-in-ms-sql-rownumber-rank-dens/
+
+######### IMPORTANT #############  !!!!!!!!!!!!!
+
+
+    SELECT 
+        emp_no, 
+        department, 
+        salary,
+        ROW_NUMBER() OVER(PARTITION BY department ORDER BY SALARY DESC) as dept_row_number,
+        RANK() OVER(PARTITION BY department ORDER BY SALARY DESC) as dept_salary_rank,
+        RANK() OVER(ORDER BY salary DESC) as overall_rank,
+        DENSE_RANK() OVER(ORDER BY salary DESC) as overall_dense_rank,
+        ROW_NUMBER() OVER(ORDER BY salary DESC) as overall_num
+    FROM employees ORDER BY overall_rank;
+
+#############################
+
+CREATE TABLE employees (
+    emp_no INT PRIMARY KEY AUTO_INCREMENT,
+    department VARCHAR(20),
+    salary INT
+);
+ 
+INSERT INTO employees (department, salary) VALUES
+('engineering', 80000),
+('engineering', 69000),
+('engineering', 70000),
+('engineering', 103000),
+('engineering', 67000),
+('engineering', 89000),
+('engineering', 91000),
+('sales', 59000),
+('sales', 70000),
+('sales', 159000),
+('sales', 72000),
+('sales', 60000),
+('sales', 61000),
+('sales', 61000),
+('customer service', 38000),
+('customer service', 45000),
+('customer service', 61000),
+('customer service', 40000),
+('customer service', 31000),
+('customer service', 56000),
+('customer service', 55000);
+
+SELECT emp_no, department, salary, AVG(salary) OVER() FROM employees;
+ 
+SELECT 
+    emp_no, 
+    department, 
+    salary, 
+    MIN(salary) OVER(),
+    MAX(salary) OVER()
+FROM employees;
+    
+    
+SELECT 
+    emp_no, department, salary, MIN(salary), MAX(salary)
+FROM
+    employees;
+
+####### TASK #######
+
+SELECT 
+   distinct department, FORMAT(round(avg(salary) over(partition by department),2),2) as Average_Salary
+FROM
+    employees;
+
+
+### QUERIES
+
+    SELECT 
+        emp_no, 
+        department, 
+        salary, 
+        AVG(salary) OVER(PARTITION BY department) AS dept_avg,
+        AVG(salary) OVER() AS company_avg
+    FROM employees;
+     
+    SELECT 
+        emp_no, 
+        department, 
+        salary, 
+        COUNT(*) OVER(PARTITION BY department) as dept_count
+    FROM employees;
+     
+    SELECT 
+        emp_no, 
+        department, 
+        salary, 
+        SUM(salary) OVER(PARTITION BY department) AS dept_payroll,
+        SUM(salary) OVER() AS total_payroll
+    FROM employees;
+
+
+###
+
+with summary as (
+SELECT 
+    emp_no, 
+    department, 
+    salary, 
+    SUM(salary) OVER(PARTITION BY department) AS dept_payroll,
+    SUM(salary) OVER() AS total_payroll,
+    concat(round(salary / (SUM(salary) OVER(PARTITION BY department)),2),'%') AS Percentage_of_all
+FROM employees)
+select sum(salary) from summary;
+
+
+####
+
+
+SELECT 
+    emp_no, 
+    department, 
+    salary, 
+    SUM(salary) OVER(PARTITION BY department) AS dept_payroll,
+    SUM(salary) OVER() AS total_payroll,
+    concat(round(salary / SUM(salary) OVER(),3),'%') AS Percentage_of_all
+FROM employees;
+
+
+
+#####
+
+
+    SELECT 
+        emp_no, 
+        department, 
+        salary, 
+        SUM(salary) OVER(PARTITION BY department ORDER BY salary) AS rolling_dept_salary,
+        SUM(salary) OVER(PARTITION BY department) AS total_dept_salary
+    FROM employees;
+
+
+######
+
+
+    SELECT 
+        emp_no, 
+        department, 
+        salary, 
+        MIN(salary) OVER(PARTITION BY department ORDER BY salary DESC) as rolling_min
+    FROM employees;
+
+
+####
+
+
+select emp_no, department, salary, max(salary) over(partition by department) 
+from employees;
+
+####
+    
+SELECT 
+    department, MAX(salary)
+FROM
+    employees
+GROUP BY department;
+
+
+
+#####    RANK ()  
+
+
+select department, salary, emp_no,
+rank() over(order by salary desc)
+from employees;
+
+
+####  
+
+select department, salary, emp_no,
+rank() over(partition by department order by salary desc) as Dept_salary_rank,
+rank() over(order by salary) as overall_salary_rank
+from employees;
+
+
+######### IMPORTANT #############  !!!!!!!!!!!!!
+
+
+    SELECT 
+        emp_no, 
+        department, 
+        salary,
+        ROW_NUMBER() OVER(PARTITION BY department ORDER BY SALARY DESC) as dept_row_number,
+        RANK() OVER(PARTITION BY department ORDER BY SALARY DESC) as dept_salary_rank,
+        RANK() OVER(ORDER BY salary DESC) as overall_rank,
+        DENSE_RANK() OVER(ORDER BY salary DESC) as overall_dense_rank,
+        ROW_NUMBER() OVER(ORDER BY salary DESC) as overall_num
+    FROM employees ORDER BY overall_rank;
+
+
+### NTILE
+
+SELECT emp_no, department, salary,
+ntile(4) over (order by salary asc) as salary_quartile
+from employees;
+
+
+
+SELECT department, salary,
+-- ntile(4) over (partition by department) as department_quartile
+ntile(4) over (order by salary desc) as salary_quartile	
+from employees;
+
+SELECT emp_no, department, salary,
+ntile(5) over (order by salary desc)
+from employees;
+
+
+######
+
+
+select emp_no, department, salary,
+first_value(salary) over(order by salary desc) as Max_salary
+from employees
+limit 3;
+
+
+
+    SELECT 
+        emp_no, 
+        department, 
+        salary,
+        FIRST_VALUE(emp_no) OVER(PARTITION BY department ORDER BY salary DESC) as highest_paid_dept,
+        FIRST_VALUE(emp_no) OVER(ORDER BY salary DESC) as highest_paid_overall
+    FROM employees;
+
+
+#### NTH VALUE
+
+select emp_no, department, salary,
+nth_value(salary,10) over(order by salary desc) as Max_salary
+from employees;
+
+
+#### LAG & LEAD 
+
+select department, 
+		emp_no, 
+        salary, 
+        lag(salary) over(order by salary) AS previous_salary, 
+        salary - lag(salary) over(order by salary) as Difference_in_Salary 
+from employees;
